@@ -150,20 +150,6 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    lazy = false,
-    config = function()
-      require('onedark').setup {
-        -- Set a style preset. 'dark' is default.
-        style = 'warmer', -- dark, darker, cool, deep, warm, warmer, light
-      }
-      require('onedark').load()
-    end,
-  },
-
-  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -631,6 +617,9 @@ cmp.setup {
 }
 
 vim.keymap.set('n', '<C-n>', ':Neotree toggle<CR>')
+vim.keymap.set('n', '<C-s>', ':w<CR>')
+vim.keymap.set('n', '<S-L>', ':tabnext<CR>')
+vim.keymap.set('n', '<S-H>', ':tabnext -1<CR>')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
