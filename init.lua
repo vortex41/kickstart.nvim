@@ -495,6 +495,7 @@ require('lazy').setup({
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<S-M-R>', vim.lsp.buf.rename, '[R]e[n]ame')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
@@ -507,6 +508,7 @@ require('lazy').setup({
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('<M-d>', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -798,7 +800,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'python', 'rust', 'go' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -809,6 +811,38 @@ require('lazy').setup({
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = { [']m'] = '@function.outer', [']]'] = '@class.outer' },
+          goto_next_end = { [']M'] = '@function.outer', [']['] = '@class.outer' },
+          goto_previous_start = { ['[m'] = '@function.outer', ['[['] = '@class.outer' },
+          goto_previous_end = { ['[M'] = '@function.outer', ['[]'] = '@class.outer' },
+        },
+        swap = {
+          enable = true,
+          swap_next = { ['<leader>>'] = '@parameter.inner' },
+          swap_previous = { ['<leader><'] = '@parameter.outer' },
+        },
+        lsp_interop = {
+          enable = true,
+          peek_definition_code = {
+            ['gD'] = '@function.outer',
+          },
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
